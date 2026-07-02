@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+asyncpg
+redis
+apscheduler
+yfinance
+pandas
+numpy
+python-dotenv
+pydantic
+httpx
+pytest
+pytest-asyncio
