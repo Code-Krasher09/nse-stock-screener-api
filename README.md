@@ -1,6 +1,7 @@
 # nse-stock-screener-api
 
 [![Status](https://img.shields.io/badge/Status-%F0%9F%9A%A7%20In%20Active%20Development-yellow)](#)
+[![CI Pipeline](https://github.com/Code-Krasher09/nse-stock-screener-api/actions/workflows/ci.yml/badge.svg)](https://github.com/Code-Krasher09/nse-stock-screener-api/actions/workflows/ci.yml)
 
 A real-time REST API for screening NSE equities using technical indicators (RSI, MACD, Bollinger Bands) built with FastAPI, PostgreSQL, and Redis.
 
@@ -10,7 +11,7 @@ A real-time REST API for screening NSE equities using technical indicators (RSI,
 - **Redis**
 - **APScheduler**
 - **yfinance**, **Pandas**, **NumPy**
-- **Docker**
+- **Docker** & **GitHub Actions**
 
 ## Features
 - **Multi-factor screening**: Screen stocks based on multiple technical indicators simultaneously.
@@ -50,3 +51,18 @@ Make sure you have Docker and Docker Compose installed.
    docker-compose up --build
    ```
 4. The API will be available at `http://localhost:8000`.
+
+## Running Tests
+
+To run the test suite locally (requires PostgreSQL and Redis to be running):
+
+```bash
+# Install testing dependencies
+pip install -r requirements.txt
+
+# Run ruff linter
+ruff check .
+
+# Run pytest with coverage
+pytest --cov=. --cov-report=term-missing
+```
