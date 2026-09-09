@@ -1,12 +1,12 @@
 """
 Unit tests for technical indicators.
 """
-import pytest
 import pandas as pd
-import numpy as np
-from indicators.rsi import calculate_rsi
-from indicators.macd import calculate_macd
+
 from indicators.bollinger import calculate_bollinger_bands
+from indicators.macd import calculate_macd
+from indicators.rsi import calculate_rsi
+
 
 def test_calculate_rsi_flat_series():
     """
@@ -15,9 +15,10 @@ def test_calculate_rsi_flat_series():
     """
     series = pd.Series([100.0] * 20)
     rsi = calculate_rsi(series, period=14)
-    
+
     assert pd.isna(rsi.iloc[0:14]).all()
     assert (rsi.iloc[14:] == 100.0).all()
+
 
 def test_calculate_rsi_increasing_series():
     """
@@ -25,8 +26,9 @@ def test_calculate_rsi_increasing_series():
     """
     series = pd.Series([float(i) for i in range(100, 120)])
     rsi = calculate_rsi(series, period=14)
-    
+
     assert (rsi.iloc[14:] == 100.0).all()
+
 
 def test_calculate_bollinger_bands():
     """
@@ -35,11 +37,12 @@ def test_calculate_bollinger_bands():
     """
     series = pd.Series([100.0] * 25)
     upper, lower, mid = calculate_bollinger_bands(series, period=20, std_dev=2.0)
-    
+
     assert pd.isna(upper.iloc[0:19]).all()
     assert (mid.iloc[19:] == 100.0).all()
     assert (upper.iloc[19:] == 100.0).all()
     assert (lower.iloc[19:] == 100.0).all()
+
 
 def test_calculate_macd_insufficient_data():
     """
@@ -47,7 +50,8 @@ def test_calculate_macd_insufficient_data():
     """
     series = pd.Series([100.0] * 10)
     macd, signal, hist = calculate_macd(series)
-    
+
     assert pd.isna(macd).all()
     assert pd.isna(signal).all()
     assert pd.isna(hist).all()
+

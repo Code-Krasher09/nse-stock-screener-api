@@ -60,11 +60,13 @@ ENV/
 env.bak/
 venv.bak/
 
-# IDEs
+# IDEs and Tools
 .vscode/
 .idea/
 *.swp
 *.swo
+.ruff_cache/
+
 
 # Docker
 .dockerignore

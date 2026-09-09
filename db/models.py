@@ -1,11 +1,27 @@
 """
 SQLAlchemy database models.
 """
-from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, Boolean, Date, DateTime, ForeignKey, UniqueConstraint
+from datetime import UTC, datetime
+
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Date,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
+
+
+def utc_now() -> datetime:
+    return datetime.now(UTC)
+
 
 class Stock(Base):
     """
@@ -18,8 +34,8 @@ class Stock(Base):
     company_name = Column(String, nullable=True)
     sector = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=utc_now)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now)
 
     prices = relationship("PriceHistory", back_populates="stock")
 
@@ -29,7 +45,7 @@ class PriceHistory(Base):
     Model representing historical OHLCV data.
     """
     __tablename__ = "price_history"
-    __table_args__ = (UniqueConstraint('stock_id', 'date', name='uq_stock_date'),)
+    __table_args__ = (UniqueConstraint("stock_id", "date", name="uq_stock_date"),)
 
     id = Column(Integer, primary_key=True, index=True)
     stock_id = Column(Integer, ForeignKey("stocks.id", ondelete="CASCADE"), nullable=False)
@@ -39,7 +55,7 @@ class PriceHistory(Base):
     low = Column(Float, nullable=False)
     close = Column(Float, nullable=False)
     volume = Column(Float, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=utc_now)
 
     stock = relationship("Stock", back_populates="prices")
 
@@ -49,12 +65,12 @@ class Indicator(Base):
     Model representing technical indicators for a stock on a specific date.
     """
     __tablename__ = "indicators"
-    __table_args__ = (UniqueConstraint('stock_id', 'date', name='uq_indicator_stock_date'),)
+    __table_args__ = (UniqueConstraint("stock_id", "date", name="uq_indicator_stock_date"),)
 
     id = Column(Integer, primary_key=True, index=True)
     stock_id = Column(Integer, ForeignKey("stocks.id", ondelete="CASCADE"), nullable=False)
     date = Column(Date, nullable=False, index=True)
-    
+
     rsi = Column(Float, nullable=True)
     macd = Column(Float, nullable=True)
     macd_signal = Column(Float, nullable=True)
@@ -62,7 +78,8 @@ class Indicator(Base):
     bb_upper = Column(Float, nullable=True)
     bb_lower = Column(Float, nullable=True)
     bb_mid = Column(Float, nullable=True)
-    
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
+
+    created_at = Column(DateTime, default=utc_now)
+
     stock = relationship("Stock")
+

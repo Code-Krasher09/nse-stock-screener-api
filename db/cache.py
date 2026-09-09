@@ -1,9 +1,11 @@
 """
 Redis caching utility.
 """
-import os
 import json
 import logging
+import os
+from typing import Any
+
 from redis import asyncio as aioredis
 
 logger = logging.getLogger(__name__)
@@ -14,7 +16,8 @@ redis_client = aioredis.from_url(REDIS_URL, decode_responses=True)
 # Note: Redis integration into API routes is deferred to Phase 4.
 # These utilities will be used then for caching screener results and ticker data.
 
-async def get_cache(key: str):
+
+async def get_cache(key: str) -> Any:
     """
     Retrieve value from Redis cache.
     """
@@ -26,7 +29,8 @@ async def get_cache(key: str):
         logger.error(f"Redis get error for {key}: {e}")
     return None
 
-async def set_cache(key: str, value: dict, ttl: int = 300):
+
+async def set_cache(key: str, value: Any, ttl: int = 300) -> None:
     """
     Store value in Redis cache with a TTL (default 5 minutes).
     """
@@ -34,3 +38,4 @@ async def set_cache(key: str, value: dict, ttl: int = 300):
         await redis_client.set(key, json.dumps(value), ex=ttl)
     except Exception as e:
         logger.error(f"Redis set error for {key}: {e}")
+

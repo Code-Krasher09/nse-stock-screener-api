@@ -1,29 +1,32 @@
 """
 Pydantic schemas for API requests and responses.
 """
-from typing import Optional, List
 from datetime import date
+
 from pydantic import BaseModel
 
+
 class ScreenRequest(BaseModel):
-    price_min: Optional[float] = None
-    price_max: Optional[float] = None
-    volume_min: Optional[float] = None
-    rsi_min: Optional[float] = None
-    rsi_max: Optional[float] = None
-    macd_min: Optional[float] = None
-    macd_max: Optional[float] = None
+    price_min: float | None = None
+    price_max: float | None = None
+    volume_min: float | None = None
+    rsi_min: float | None = None
+    rsi_max: float | None = None
+    macd_min: float | None = None
+    macd_max: float | None = None
     # Note for Phase 5+: Add complex boolean crossover logic here (e.g. macd_crossover_signal)
+
 
 class IndicatorResponse(BaseModel):
     date: date
-    rsi: Optional[float] = None
-    macd: Optional[float] = None
-    macd_signal: Optional[float] = None
-    macd_hist: Optional[float] = None
-    bb_upper: Optional[float] = None
-    bb_lower: Optional[float] = None
-    bb_mid: Optional[float] = None
+    rsi: float | None = None
+    macd: float | None = None
+    macd_signal: float | None = None
+    macd_hist: float | None = None
+    bb_upper: float | None = None
+    bb_lower: float | None = None
+    bb_mid: float | None = None
+
 
 class PriceResponse(BaseModel):
     date: date
@@ -33,16 +36,20 @@ class PriceResponse(BaseModel):
     close: float
     volume: float
 
+
 class StockBase(BaseModel):
     symbol: str
-    company_name: Optional[str] = None
-    sector: Optional[str] = None
+    company_name: str | None = None
+    sector: str | None = None
+
 
 class StockLatestResponse(StockBase):
-    latest_price: Optional[float] = None
-    latest_volume: Optional[float] = None
-    indicators: Optional[IndicatorResponse] = None
+    latest_price: float | None = None
+    latest_volume: float | None = None
+    indicators: IndicatorResponse | None = None
+
 
 class StockHistoryResponse(StockBase):
-    history: List[PriceResponse] = []
-    indicators: List[IndicatorResponse] = []
+    history: list[PriceResponse] = []
+    indicators: list[IndicatorResponse] = []
+
