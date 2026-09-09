@@ -37,7 +37,7 @@ async def run_screener(request: ScreenRequest, db: AsyncSession = Depends(get_db
         select(Stock, PriceHistory, Indicator)
         .join(PriceHistory, and_(Stock.id == PriceHistory.stock_id, PriceHistory.date == subq_date.c.max_date))
         .outerjoin(Indicator, and_(Stock.id == Indicator.stock_id, Indicator.date == subq_date.c.max_date))
-        .where(Stock.is_active == True)
+        .where(Stock.is_active)
     )
     
     # Apply scalar filters

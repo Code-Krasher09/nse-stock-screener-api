@@ -1,9 +1,7 @@
 """
 Unit tests for technical indicators.
 """
-import pytest
 import pandas as pd
-import numpy as np
 from indicators.rsi import calculate_rsi
 from indicators.macd import calculate_macd
 from indicators.bollinger import calculate_bollinger_bands

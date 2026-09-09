@@ -30,7 +30,7 @@ async def get_all_stocks(db: AsyncSession = Depends(get_db)):
         select(Stock, PriceHistory, Indicator)
         .outerjoin(PriceHistory, and_(Stock.id == PriceHistory.stock_id, PriceHistory.date == subq_price.c.max_date))
         .outerjoin(Indicator, and_(Stock.id == Indicator.stock_id, Indicator.date == subq_price.c.max_date))
-        .where(Stock.is_active == True)
+        .where(Stock.is_active)
     )
     
     result = await db.execute(stmt)
